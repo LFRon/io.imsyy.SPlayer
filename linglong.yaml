@@ -33,10 +33,10 @@ build: |
     # 再删除过时的应用程序库
     rm -rf ${LINGLONG_APPID}
     # 调用内置的busybox下载AppImage
-    /project/linglong/sources/bin/busybox wget -O SPlayer.AppImage ${APPIMAGE_URL}
+    /project/linglong/sources/bin/busybox wget -O target.AppImage ${APPIMAGE_URL}
 
     # 解包AppImage并进入squashfs-root目录
-    chmod +x SPlayer.AppImage && ./SPlayer.AppImage --appimage-extract
+    chmod +x target.AppImage && ./target.AppImage --appimage-extract
     cd squashfs-root
 
     # 拷贝必需的lib库
