@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=SPlayer
+Exec=/opt/apps/io.imsyy.SPlayer/files/bin/io.imsyy.SPlayer %U
+Terminal=false
+Icon=SPlayer
+StartupWMClass=SPlayer
+Comment=A minimalist music player
+Comment[zh_CN]=简约的音乐播放器
+Categories=Audio;Music;Network;
