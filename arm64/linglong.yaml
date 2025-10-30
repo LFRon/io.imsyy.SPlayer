@@ -1,0 +1,58 @@
+version: "1"
+
+package:
+  id: io.imsyy.SPlayer
+  name: SPlayer
+  version: 3.0.0.3
+  kind: app
+  description: |
+    SPlayer是一个简约的音乐播放器,这是其Linux原生版本
+
+base: org.deepin.base/25.2.1
+runtime: 
+##Add GTK3 & GTK4 Fcitx5-Frontend
+command:
+  - "/opt/apps/io.imsyy.SPlayer/files/bin/io.imsyy.SPlayer"
+
+build: |
+    ## 环境设置
+    set -x
+    export PATH=$PATH:/usr/libexec/linglong/builder/helper
+    # 设置AppImage下载链接
+    APPIMAGE_URL=https://github.com/imsyy/SPlayer/releases/download/v3.0.0-beta.3/splayer-3.0.0-beta.3-arm64.AppImage
+    # 设置工作目录
+    SOURCES="linglong/sources"
+    # 设置启动二进制文件名称
+    BINNAME=${LINGLONG_APPID}
+
+    # 进入工作目录
+    cd ${SOURCES}
+
+    # 删除${SOURCES}目录里过时的lib库
+    rm -f libs/*
+    # 再删除过时的应用程序库
+    rm -rf ${LINGLONG_APPID}
+    # 调用内置的busybox下载AppImage
+    /project/linglong/sources/bin/busybox wget -O target.AppImage ${APPIMAGE_URL}
+
+    # 解包AppImage并进入squashfs-root目录
+    chmod +x target.AppImage && ./target.AppImage --appimage-extract
+    cd squashfs-root
+
+    # ARM64架构不需要拷贝,故跳过复制必需的lib库
+    # cp -a usr/lib/* ../libs
+    # 删除多余的文件
+    rm -rf .DirIcon AppRun SPlayer.png SPlayer.desktop usr
+    # 退回上一级重命名
+    cd .. && mv squashfs-root ${LINGLONG_APPID}
+
+    #写入启动脚本
+    echo "#!/bin/bash" > bin/${BINNAME}
+    echo "exec \"${PREFIX}/${LINGLONG_APPID}/SPlayer\" \"\$@\"" >> bin/${BINNAME}
+    chmod -R 755 *
+
+    #进行安装
+    cp -a bin $PREFIX
+    cp -a ${LINGLONG_APPID} $PREFIX
+    cp -a share $PREFIX
+    cp -a libs $PREFIX/lib
