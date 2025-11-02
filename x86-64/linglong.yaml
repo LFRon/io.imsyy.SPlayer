@@ -3,7 +3,7 @@ version: "1"
 package:
   id: io.imsyy.SPlayer
   name: SPlayer
-  version: 3.0.0.3
+  version: 3.0.0.4
   kind: app
   description: |
     SPlayer是一个简约的音乐播放器,这是其Linux原生版本
@@ -14,16 +14,40 @@ runtime:
 command:
   - "/opt/apps/io.imsyy.SPlayer/files/bin/io.imsyy.SPlayer"
 
+sources:
+    - kind: file
+      url: https://github.com/imsyy/SPlayer/releases/download/v3.0.0-beta.3/splayer-3.0.0-beta.3-x86_64.AppImage
+      digest: 3e408974f96ac89e6e9dcc0bd7b1b07010ec7fb14182d95dbe6da5030c0e87f4
+
 build: |
     ## 环境设置
     set -x
     export PATH=$PATH:/usr/libexec/linglong/builder/helper
     # 设置工作目录
-    SOURCES="linglong/sources"
+    SOURCES="linglong/app-sources"
     # 设置启动二进制文件名称
     BINNAME=${LINGLONG_APPID}
     # 进入工作目录
     cd ${SOURCES}
+
+    # 清理过时的lib库
+    rm -rf libs && mkdir libs
+
+    # 将AppImage挪过来并进行解压
+    mv ../sources/*.AppImage target.AppImage
+    chmod +x target.AppImage && ./target.AppImage --appimage-extract
+
+    # 进入squash-root应用本体目录
+    cd squashfs-root
+    # 拷贝必需libs库
+    cp -a usr/lib/* ../libs
+    # 删除多余文件
+    rm -rf .DirIcon AppRun SPlayer.desktop SPlayer.png usr
+
+    # 退出squashfs-root目录并重命名
+    cd .. && mv squashfs-root ${LINGLONG_APPID}
+    # 删除多余的AppImage文件
+    rm -f target.AppImage
 
     #写入启动脚本
     echo "#!/bin/bash" > bin/${BINNAME}
