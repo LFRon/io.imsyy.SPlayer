@@ -16,8 +16,8 @@ command:
 
 sources:
     - kind: file
-      url: https://github.com/imsyy/SPlayer/releases/download/v3.0.0-beta.3/splayer-3.0.0-beta.3-arm64.AppImage
-      digest: 0811473984b7a878ade8bb29f0760033179e6144c8b26169ac0ff45290cbc91e
+      url: https://github.com/imsyy/SPlayer/releases/download/v3.0.0-beta.3/splayer-3.0.0-beta.3-arm64.deb
+      digest: a85e807021fd0735618d854ce99fc42d408e22d7d8c9b52c526d9ff7cbb9d226
 
 build: |
     ## 环境设置
@@ -29,26 +29,29 @@ build: |
     BINNAME=${LINGLONG_APPID}
     # 进入工作目录
     cd ${SOURCES}
+    
+    # 清理多余目录
+    rm -rf deb ${LINGLONG_APPID}
+    
+    # 将deb挪过来并进行解压
+    mv ../sources/*.deb target.deb
+    dpkg-deb -R target.deb deb
 
-    # ARM64架构的AppImage不需要清理过时的lib库,故跳过
-    # 这里没跳过是防止没libs文件夹导致报错
-    rm -rf libs && mkdir libs
-
-    # 将AppImage挪过来并进行解压
-    mv ../sources/*.AppImage target.AppImage
-    chmod +x target.AppImage && ./target.AppImage --appimage-extract
-
-    # 进入squash-root应用本体目录
-    cd squashfs-root
+    # 进入应用本体目录将其拷贝出来
+    mv deb/opt/SPlayer ${LINGLONG_APPID}
+    # 删除多余的deb目录
+    rm -rf deb
+    # 进入应用目录
+    cd ${LINGLONG_APPID}
     # ARM64架构的AppImage不需要拷贝必需libs库,故跳过
     # cp -a usr/lib/* ../libs
     # 删除多余文件
     rm -rf .DirIcon AppRun SPlayer.desktop SPlayer.png usr
 
-    # 退出squashfs-root目录并重命名
-    cd .. && mv squashfs-root ${LINGLONG_APPID}
-    # 删除多余的AppImage文件
-    rm -f target.AppImage
+    # 退出应用本体目录
+    cd ..
+    # 删除多余的deb文件
+    rm -f target.deb
 
     #写入启动脚本
     echo "#!/bin/bash" > bin/${BINNAME}
@@ -59,4 +62,3 @@ build: |
     cp -a bin $PREFIX
     cp -a ${LINGLONG_APPID} $PREFIX
     cp -a share $PREFIX
-    cp -a libs $PREFIX/lib
