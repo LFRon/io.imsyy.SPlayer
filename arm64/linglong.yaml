@@ -16,8 +16,8 @@ command:
 
 sources:
     - kind: file
-      url: https://github.com/imsyy/SPlayer/releases/download/v3.0.0-beta.3/splayer-3.0.0-beta.3-x86_64.AppImage
-      digest: 3e408974f96ac89e6e9dcc0bd7b1b07010ec7fb14182d95dbe6da5030c0e87f4
+      url: https://github.com/imsyy/SPlayer/releases/download/v3.0.0-beta.3/splayer-3.0.0-beta.3-arm64.AppImage
+      digest: 0811473984b7a878ade8bb29f0760033179e6144c8b26169ac0ff45290cbc91e
 
 build: |
     ## 环境设置
