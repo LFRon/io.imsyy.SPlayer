@@ -30,7 +30,7 @@ build: |
     # 进入工作目录
     cd ${SOURCES}
 
-    # 清理过时的lib库
+    # 清理过时的lib库并进行重建
     rm -rf libs && mkdir libs
 
     # 将AppImage挪过来并进行解压
