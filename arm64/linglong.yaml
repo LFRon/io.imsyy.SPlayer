@@ -53,12 +53,12 @@ build: |
     # 删除多余的deb文件
     rm -f target.deb
 
-    #写入启动脚本
+    # 写入启动脚本
     echo "#!/bin/bash" > bin/${BINNAME}
     echo "exec \"${PREFIX}/${LINGLONG_APPID}/SPlayer\" \"\$@\"" >> bin/${BINNAME}
     chmod -R 755 *
 
-    #进行安装
+    # 进行安装
     cp -a bin $PREFIX
     cp -a ${LINGLONG_APPID} $PREFIX
     cp -a share $PREFIX
