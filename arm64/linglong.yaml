@@ -42,14 +42,14 @@ build: |
     # 删除多余的deb目录
     rm -rf deb
     # 进入应用目录
-    cd ${LINGLONG_APPID}
+    # cd ${LINGLONG_APPID}
     # ARM64架构的AppImage不需要拷贝必需libs库,故跳过
     # cp -a usr/lib/* ../libs
-    # 删除多余文件
-    rm -rf .DirIcon AppRun SPlayer.desktop SPlayer.png usr
+    # 由于解压的deb包故不需要删除多余文件
+    # rm -rf .DirIcon AppRun SPlayer.desktop SPlayer.png usr
 
     # 退出应用本体目录
-    cd ..
+    # cd ..
     # 删除多余的deb文件
     rm -f target.deb
 
