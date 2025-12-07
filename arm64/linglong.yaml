@@ -3,7 +3,7 @@ version: "1"
 package:
   id: io.imsyy.SPlayer
   name: SPlayer
-  version: 3.0.0.5
+  version: 3.0.0.6
   kind: app
   description: |
     SPlayer是一个简约的音乐播放器,这是其Linux原生版本
