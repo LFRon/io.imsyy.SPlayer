@@ -3,7 +3,7 @@ version: "1"
 package:
   id: io.imsyy.SPlayer
   name: SPlayer
-  version: 3.0.0.6
+  version: 3.0.0.7
   kind: app
   description: |
     SPlayer是一个简约的音乐播放器,这是其Linux原生版本
@@ -16,8 +16,8 @@ command:
 
 sources:
     - kind: file
-      url: https://github.com/imsyy/SPlayer/releases/download/v3.0.0-beta.6/splayer-3.0.0-beta.6-arm64.deb
-      digest: d9bebae9ed79234e60f26a5bf4be0af9417b906147a856b1621b220401cbfcd4
+      url: https://github.com/imsyy/SPlayer/releases/download/v3.0.0-beta.7/splayer-3.0.0-beta.7-arm64.deb
+      digest: d4873759f9e856996d7f65342bed9c1ba2753657a23eb2dac9caaedb91e40cc7
 
 build: |
     ## 环境设置

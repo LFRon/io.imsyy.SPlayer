@@ -3,7 +3,7 @@ version: "1"
 package:
   id: io.imsyy.SPlayer
   name: SPlayer
-  version: 3.0.0.6
+  version: 3.0.0.7
   kind: app
   description: |
     SPlayer是一个简约的音乐播放器,这是其Linux原生版本
@@ -16,8 +16,8 @@ command:
 
 sources:
     - kind: file
-      url: https://github.com/imsyy/SPlayer/releases/download/v3.0.0-beta.6/splayer-3.0.0-beta.6-x86_64.AppImage
-      digest: 895ee63b18b12ff16eea4a5a4434b000636b9fc84105f2796ecac7292d6a3081
+      url: https://github.com/imsyy/SPlayer/releases/download/v3.0.0-beta.7/splayer-3.0.0-beta.7-arm64.deb
+      digest: d4873759f9e856996d7f65342bed9c1ba2753657a23eb2dac9caaedb91e40cc7
 
 build: |
     ## 环境设置
@@ -29,33 +29,36 @@ build: |
     BINNAME=${LINGLONG_APPID}
     # 进入工作目录
     cd ${SOURCES}
+    
+    # 清理多余目录
+    rm -rf deb ${LINGLONG_APPID}
+    
+    # 将deb挪过来并进行解压
+    mv ../sources/*.deb target.deb
+    dpkg-deb -R target.deb deb
 
-    # 清理过时的lib库并进行重建
-    rm -rf libs && mkdir libs
+    # 进入应用本体目录将其拷贝出来
+    mv deb/opt/SPlayer ${LINGLONG_APPID}
+    # 删除多余的deb目录
+    rm -rf deb
+    # 进入应用目录
+    # cd ${LINGLONG_APPID}
+    # ARM64架构的AppImage不需要拷贝必需libs库,故跳过
+    # cp -a usr/lib/* ../libs
+    # 由于解压的deb包故不需要删除多余文件
+    # rm -rf .DirIcon AppRun SPlayer.desktop SPlayer.png usr
 
-    # 将AppImage挪过来并进行解压
-    mv ../sources/*.AppImage target.AppImage
-    chmod +x target.AppImage && ./target.AppImage --appimage-extract
+    # 退出应用本体目录
+    # cd ..
+    # 删除多余的deb文件
+    rm -f target.deb
 
-    # 进入squash-root应用本体目录
-    cd squashfs-root
-    # 拷贝必需libs库
-    cp -a usr/lib/* ../libs
-    # 删除多余文件
-    rm -rf .DirIcon AppRun SPlayer.desktop SPlayer.png usr
-
-    # 退出squashfs-root目录并重命名
-    cd .. && mv squashfs-root ${LINGLONG_APPID}
-    # 删除多余的AppImage文件
-    rm -f target.AppImage
-
-    #写入启动脚本
+    # 写入启动脚本
     echo "#!/bin/bash" > bin/${BINNAME}
     echo "exec \"${PREFIX}/${LINGLONG_APPID}/SPlayer\" \"\$@\"" >> bin/${BINNAME}
     chmod -R 755 *
 
-    #进行安装
+    # 进行安装
     cp -a bin $PREFIX
     cp -a ${LINGLONG_APPID} $PREFIX
     cp -a share $PREFIX
-    cp -a libs $PREFIX/lib
