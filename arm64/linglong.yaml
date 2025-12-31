@@ -16,8 +16,13 @@ command:
 
 sources:
     - kind: file
+<<<<<<< HEAD
       url: https://github.com/imsyy/SPlayer/releases/download/v3.0.0-beta.8.2025/splayer-3.0.0-beta.8-arm64.deb
       digest: 2d15c79d8fe378b15ac03849f43422e4983f89263ae686e560daa0f75ff9e21b
+=======
+      url: https://github.com/imsyy/SPlayer/releases/download/v3.0.0-beta.7/splayer-3.0.0-beta.7-arm64.deb
+      digest: fba7524d7ed56f3e97d0e7cc0236913fa96aaae6ee015f72bb7f2fd05cd47607
+>>>>>>> 83ec887bddb5656ed0862cfc5472c451bc0ad9b1
 
 build: |
     ## 环境设置
