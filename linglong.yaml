@@ -51,7 +51,7 @@ build: |
 
     #写入启动脚本
     echo "#!/bin/bash" > bin/${BINNAME}
-    echo "exec \"${PREFIX}/${LINGLONG_APPID}/SPlayer\" \"\$@\"" >> bin/${BINNAME}
+    echo "exec \"${PREFIX}/${LINGLONG_APPID}/SPlayer\" \"--no-sandbox\" \"--ozone-platform=x11\" \"\$@\"" >> bin/${BINNAME}
     chmod -R 755 *
 
     #进行安装
