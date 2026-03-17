@@ -1,2 +1,2 @@
 #!/bin/bash
-exec "/opt/apps/io.imsyy.SPlayer/files/io.imsyy.SPlayer/SPlayer" "$@"
+exec "/opt/apps/io.imsyy.SPlayer/files/io.imsyy.SPlayer/SPlayer" "--no-sandbox" "--ozone-platform=x11" "$@"
