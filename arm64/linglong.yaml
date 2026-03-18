@@ -8,7 +8,7 @@ package:
   description: |
     SPlayer是一个简约的音乐播放器,这是其Linux原生版本
 
-base: org.deepin.base/25.2.1
+base: org.deepin.base/25.2.2
 runtime: 
 ##Add GTK3 & GTK4 Fcitx5-Frontend
 command:
@@ -39,23 +39,14 @@ build: |
 
     # 进入应用本体目录将应用本体拷贝出来
     mv deb/opt/SPlayer ${LINGLONG_APPID}
+
     # 删除多余的deb目录与安装包
     rm -rf deb target.deb
-    
-    # 进入应用目录
-    # cd ${LINGLONG_APPID}
-    # ARM64架构的AppImage不需要拷贝必需libs库,故跳过
-    # cp -a usr/lib/* ../libs
-    # 由于解压的deb包故不需要删除多余文件
-    # rm -rf .DirIcon AppRun SPlayer.desktop SPlayer.png usr
-
-    # 退出应用本体目录
-    # cd ..
 
     # 写入启动脚本
     echo "#!/bin/bash" > bin/${BINNAME}
     echo "exec \"${PREFIX}/${LINGLONG_APPID}/SPlayer\" \"--no-sandbox\" \"\$@\"" >> bin/${BINNAME}
-    chmod -R 755 *
+    chmod -R 755 bin/*
 
     # 进行安装
     cp -a bin $PREFIX
