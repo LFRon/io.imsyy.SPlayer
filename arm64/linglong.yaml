@@ -1,23 +1,23 @@
 version: "1"
 
 package:
-  id: io.imsyy.SPlayer
+  id: io.imsyy.splayer-next
   name: SPlayer
-  version: 3.0.0.10
+  version: 1.2.0.0
   kind: app
   description: |
     SPlayer是一个简约的音乐播放器,这是其Linux原生版本
 
 base: org.deepin.base/25.2.2
-runtime: 
+runtime: null
 ##Add GTK3 & GTK4 Fcitx5-Frontend
 command:
-  - "/opt/apps/io.imsyy.SPlayer/files/bin/io.imsyy.SPlayer"
+  - "/opt/apps/io.imsyy.splayer-next/files/bin/io.imsyy.splayer-next"
 
 sources:
     - kind: file
-      url: https://github.com/imsyy/SPlayer/releases/download/v3.0.0/splayer-3.0.0-arm64.deb
-      digest: 2db509efefcaa0e142bd9f36991c8b89991bc28342b8f39cdfb9ddce684668ba
+      url: https://github.com/SPlayer-Dev/SPlayer-Next/releases/download/v1.2.0/splayer-next-1.2.0-arm64.AppImage
+      digest: 172ba7639647631bb44db5f719d3b65e50c36774b168c9c1dde7692fd9320be5
 
 build: |
     ## 环境设置
@@ -29,26 +29,33 @@ build: |
     BINNAME=${LINGLONG_APPID}
     # 进入工作目录
     cd ${SOURCES}
-    
-    # 清理多余目录
-    rm -rf deb ${LINGLONG_APPID}
-    
-    # 将deb挪过来并进行解压
-    mv ../sources/*.deb target.deb
-    dpkg-deb -R target.deb deb
 
-    # 进入应用本体目录将应用本体拷贝出来
-    mv deb/opt/SPlayer ${LINGLONG_APPID}
+    # 清理过时的lib库并进行重建
+    rm -rf libs && mkdir libs
 
-    # 删除多余的deb目录与安装包
-    rm -rf deb target.deb
+    # 将AppImage挪过来并进行解压
+    mv ../sources/*.AppImage target.AppImage
+    chmod +x target.AppImage && ./target.AppImage --appimage-extract
 
-    # 写入启动脚本
+    # 进入squash-root应用本体目录
+    cd squashfs-root
+    # ARM64架构不需要拷贝必需libs库,故在这里跳过
+    # cp -a usr/lib/* ../libs
+    # 删除多余文件
+    rm -rf .DirIcon AppRun SPlayer.desktop SPlayer-Next.png usr
+
+    # 退出squashfs-root目录并重命名
+    cd .. && mv squashfs-root ${LINGLONG_APPID}
+    # 删除多余的AppImage文件
+    rm -f target.AppImage
+
+    #写入启动脚本
     echo "#!/bin/bash" > bin/${BINNAME}
-    echo "exec \"${PREFIX}/${LINGLONG_APPID}/SPlayer\" \"--no-sandbox\" \"\$@\"" >> bin/${BINNAME}
-    chmod -R 755 bin/*
+    echo "exec \"${PREFIX}/${LINGLONG_APPID}/SPlayer-Next\" \"--no-sandbox\" \"--ozone-platform=x11\" \"\$@\"" >> bin/${BINNAME}
+    chmod -R 755 *
 
-    # 进行安装
+    #进行安装
     cp -a bin $PREFIX
     cp -a ${LINGLONG_APPID} $PREFIX
     cp -a share $PREFIX
+    cp -a libs $PREFIX/lib

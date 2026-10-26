@@ -1,10 +1,10 @@
 [Desktop Entry]
 Type=Application
-Name=SPlayer
-Exec=/opt/apps/io.imsyy.SPlayer/files/bin/io.imsyy.SPlayer --enable-features=Vulkan %U
+Name=SPlayer-Next
+Exec=/opt/apps/io.imsyy.splayer-next/files/bin/io.imsyy.splayer-next %U
 Terminal=false
-Icon=SPlayer
-StartupWMClass=SPlayer
-Comment=A minimalist music player
-Comment[zh_CN]=简约的音乐播放器
+Icon=SPlayer-Next
+StartupWMClass=SPlayer-Next
+Comment=A minimalist Netease cloud music online player
+Comment[zh_CN]=简约的网易云音乐在线播放器
 Categories=Audio;Music;Network;

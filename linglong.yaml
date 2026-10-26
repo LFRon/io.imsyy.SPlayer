@@ -1,23 +1,23 @@
 version: "1"
 
 package:
-  id: io.imsyy.SPlayer
+  id: io.imsyy.splayer-next
   name: SPlayer
-  version: 3.0.0.10
+  version: 1.2.0.0
   kind: app
   description: |
     SPlayer是一个简约的音乐播放器,这是其Linux原生版本
 
 base: org.deepin.base/25.2.2
-runtime: 
+runtime: null
 ##Add GTK3 & GTK4 Fcitx5-Frontend
 command:
-  - "/opt/apps/io.imsyy.SPlayer/files/bin/io.imsyy.SPlayer"
+  - "/opt/apps/io.imsyy.splayer-next/files/bin/io.imsyy.splayer-next"
 
 sources:
     - kind: file
-      url: https://github.com/imsyy/SPlayer/releases/download/v3.0.0/splayer-3.0.0-x86_64.AppImage
-      digest: 8bd7a3a2e64457e558a73f6b117fb9b0e928d95577cad181734101e68c62a886
+      url: https://github.com/SPlayer-Dev/SPlayer-Next/releases/download/v1.2.0/splayer-next-1.2.0-x86_64.AppImage
+      digest: e3527ff5401e32eeb8f98f6555399bccc78f8c89a7fba7652338d5cb2c0cdf8b
 
 build: |
     ## 环境设置
@@ -42,7 +42,7 @@ build: |
     # 拷贝必需libs库
     cp -a usr/lib/* ../libs
     # 删除多余文件
-    rm -rf .DirIcon AppRun SPlayer.desktop SPlayer.png usr
+    rm -rf .DirIcon AppRun SPlayer.desktop SPlayer-Next.png usr
 
     # 退出squashfs-root目录并重命名
     cd .. && mv squashfs-root ${LINGLONG_APPID}
@@ -51,7 +51,7 @@ build: |
 
     #写入启动脚本
     echo "#!/bin/bash" > bin/${BINNAME}
-    echo "exec \"${PREFIX}/${LINGLONG_APPID}/SPlayer\" \"--no-sandbox\" \"--ozone-platform=x11\" \"\$@\"" >> bin/${BINNAME}
+    echo "exec \"${PREFIX}/${LINGLONG_APPID}/SPlayer-Next\" \"--no-sandbox\" \"--ozone-platform=x11\" \"\$@\"" >> bin/${BINNAME}
     chmod -R 755 *
 
     #进行安装
