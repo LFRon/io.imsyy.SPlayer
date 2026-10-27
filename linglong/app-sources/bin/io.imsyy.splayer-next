@@ -1,0 +1,2 @@
+#!/bin/bash
+exec "/opt/apps/io.imsyy.splayer-next/files/io.imsyy.splayer-next/SPlayer-Next" "--no-sandbox" "--ozone-platform=x11" "$@"
